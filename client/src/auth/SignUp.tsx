@@ -1,25 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SignUpInputState, userSignUpSchema } from "@/schema/userSchema";
 import { Mail, Lock, Loader2, User2, Phone, Eye, EyeOff } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
-interface InputState {
-  fullName: string;
-  email: string;
-  password: string;
-  contact: string;
-}
+// interface InputState {
+//   fullName: string;
+//   email: string;
+//   password: string;
+//   contact: string;
+// }
 
 const SignUp = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [input, setInput] = useState<InputState>({
+  const [input, setInput] = useState<SignUpInputState>({
     fullName: "",
     email: "",
     password: "",
     contact: "",
   });
+  const [errors, setErrors] = useState<Partial<SignUpInputState>>({});
 
   const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -27,10 +29,23 @@ const SignUp = () => {
     setInput({ ...input, [name]: value });
   };
 
-  const loginHandler = (e: FormEvent) => {
+  const loginHandler = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    // form validation
+
+    const result = userSignUpSchema.safeParse(input);
+
+    if (!result.success) {
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setErrors(fieldErrors as Partial<SignUpInputState>);
+      setLoading(false);
+      return;
+    }
+
     console.log(input);
+
+    // api implementation starts here
   };
 
   return (
@@ -53,6 +68,9 @@ const SignUp = () => {
             className="px-10 focus-visible:ring-1"
           />
           <User2 className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
+          {errors && (
+            <p className="text-red-500 text-sm   mt-1">{errors.fullName}</p>
+          )}
         </div>
 
         <div className="relative mb-4">
@@ -66,6 +84,9 @@ const SignUp = () => {
             className="px-10 focus-visible:ring-1"
           />
           <Mail className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
+          {errors && (
+            <p className="text-red-500 text-sm   mt-1">{errors.email}</p>
+          )}
         </div>
 
         <div className="relative mb-4 ">
@@ -94,6 +115,10 @@ const SignUp = () => {
               />
             </>
           )}
+
+          {errors && (
+            <p className="text-red-500 text-sm   mt-1">{errors.password}</p>
+          )}
         </div>
 
         <div className="relative mb-4 ">
@@ -107,6 +132,9 @@ const SignUp = () => {
             className="px-10 focus-visible:ring-1"
           />
           <Phone className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
+          {errors && (
+            <p className="text-red-500 text-sm   mt-1">{errors.contact}</p>
+          )}
         </div>
         <div className="mb-6">
           {loading ? (
