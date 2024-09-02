@@ -121,11 +121,19 @@ const Login = () => {
               </Button>
             </>
           )}
+          <div className="mt-2 flex items-center  md:justify-center  gap:4 md:gap-0">
+            <Link
+              className=" text-red-500"
+              to="/forgot-password"
+            >
+              Forgot Password
+            </Link>
+          </div>
         </div>
         <hr />
 
-        <div className="mt-4 flex items-center justify-start md:justify-between gap:4 md:gap-0">
-          <p>Don't have an account?</p>
+        <div className="mt-4 flex items-center justify-center  gap-4 md:gap-0">
+          <p className="mr-4">Don't have an account?</p>
           <Link className="text-blue-500 " to="/signup">
             Sign up
           </Link>
