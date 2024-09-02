@@ -1,6 +1,7 @@
 import Login from "./auth/Login";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./MainLayout";
+import SignUp from "./auth/SignUp";
 
 const appRouter = createBrowserRouter([
   {
@@ -11,13 +12,19 @@ const appRouter = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
 ]);
 
 function App() {
   return (
-    <div>
-      <Login />
-    </div>
+    <>
+      <RouterProvider router={appRouter}>
+        
+      </RouterProvider>
+    </>
   );
 }
 
