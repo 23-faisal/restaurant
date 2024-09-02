@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Lock, Loader2 } from "lucide-react";
+import { Mail, Lock, Loader2, Eye, EyeOff } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -12,6 +11,7 @@ interface InputState {
 
 const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(true);
   const [input, setInput] = useState<InputState>({
     email: "",
     password: "",
@@ -26,7 +26,6 @@ const Login = () => {
   const loginHandler = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log(input);
   };
 
   return (
@@ -55,13 +54,28 @@ const Login = () => {
           <Input
             onChange={changeInputHandler}
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             placeholder="Enter your password"
             value={input.password}
             className="px-10 focus-visible:ring-1"
           />
           <Lock className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
+          {showPassword ? (
+            <>
+              <EyeOff
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-2 right-2 text-gray-500  cursor-pointer"
+              />
+            </>
+          ) : (
+            <>
+              <Eye
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-2 right-2 text-gray-500  cursor-pointer"
+              />
+            </>
+          )}
         </div>
         <div className="mb-6">
           {loading ? (
